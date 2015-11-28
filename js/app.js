@@ -69,12 +69,13 @@ var Player = function() {
 Player.prototype.update = function(dt) {
     for (i = 0; i < diff * 3; i++) {
         // console.log(allEnemies[i].x);
-        if (player.x < allEnemies[i].x + 50 &&
-            player.x > allEnemies[i].x - 50 &&
-            player.y < allEnemies[i].y + 50 &&
-            player.y > allEnemies[i].y - 50)
+        if (this.x < allEnemies[i].x + 75 &&
+            this.x > allEnemies[i].x - 60 &&
+            this.y < allEnemies[i].y + 50 &&
+            this.y > allEnemies[i].y - 50)
         {
-            console.log("GAME OVER"); // TODO - implement a 'game over' feature
+            this.x = 202;
+            this.y = 400;
         }
     };
 };
