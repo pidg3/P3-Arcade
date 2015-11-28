@@ -97,12 +97,12 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(input) {
     if (input === "right") {
         if (this.x < 402) {
-            this.x += 100;
+            this.x += 102;
         }
     }
     else if (input === "left") {
         if (this.x > 2) {
-            this.x -= 100;
+            this.x -= 102;
         }
     }
     else if (input === "up") { // Don't need extra 'if' due to player.prototype.update function, water reset
@@ -116,7 +116,7 @@ Player.prototype.handleInput = function(input) {
 };
 
 var Gem = function(colour) {
-    var xPos = 20 + (Math.random() * 400); // position on x axis
+    var xPos = Math.floor((Math.random() * 5)) * 102 + 18; // position on x axis
     this.x = xPos;
 
     if (colour === 'blue') {
@@ -149,7 +149,7 @@ Gem.prototype.update = function() {
     this.y > player.y - 10) {
         console.log("Woohoo, Gem");
         score += this.points;
-        this.x = 20 + (Math.random() * 400);
+        this.x = Math.floor((Math.random() * 5)) * 102 + 18;
     }
 };
 
