@@ -1,4 +1,4 @@
-var diff = 1; // TODO - will be used to alter difficulty settings 
+var diff = 3; // TODO - will be used to alter difficulty settings 
 
 var allEnemies = [];
 
@@ -78,6 +78,11 @@ Player.prototype.update = function(dt) {
             this.y = 400;
         }
     };
+
+    if (this.y < 60) {
+        this.x = 202;
+        this.y = 400;
+    }
 };
 
 Player.prototype.render = function() {
@@ -86,20 +91,22 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(input) {
     if (input === "right") {
-        this.x += 100;
-        console.log("Move Right");
+        if (this.x < 402) {
+            this.x += 100;
+        }
     }
     else if (input === "left") {
-        this.x -= 100;
-        console.log("Move Left");
+        if (this.x > 2) {
+            this.x -= 100;
+        }
     }
-    else if (input === "up") {
+    else if (input === "up") { // Don't need extra if due to player.prototype.update function, water reset
         this.y -= 85;
-        console.log("Move Up");
     }
     else if (input === "down") {
-        this.y += 85;
-        console.log("Move Down");
+        if (this.y < 400) {
+            this.y += 85;
+        }
     }
 };
 

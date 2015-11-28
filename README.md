@@ -6,8 +6,6 @@ Repository was cloned from the main Udacity one.
 
 ##Things to do to 'meet specification'
 
-* Reset when enter water
-* Player cannot move off screen
 * Better README: steps to run and play the game
 
 ##Ideas to 'exceed specification'
@@ -21,3 +19,5 @@ Repository was cloned from the main Udacity one.
 ##DONE list
 
 * Proper collision detection (i.e. reset)
+* Reset when enter water
+* Player cannot move off screen
