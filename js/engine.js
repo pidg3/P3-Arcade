@@ -63,7 +63,7 @@ var Engine = (function(global) {
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
-    function game() {
+    function init() {
         lastTime = Date.now();
         main();
     }
@@ -94,6 +94,10 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        gemBlue.update();
+        gemGreen.update();
+        gemOrange.update();
+
     }
 
     /* This function initially draws the "game level", it will then call
@@ -137,6 +141,7 @@ var Engine = (function(global) {
 
 
         renderEntities();
+        renderScore();
     }
 
     /* This function is called by the render function and is called on each game
@@ -152,18 +157,19 @@ var Engine = (function(global) {
         });
 
         player.render();
-    }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the game() method.
-     */
-    function menu() {
-        console.log("Has gone through menu");
-        ctx.drawImage(Resources.get('images/Gem-Green.png'), 200, 200);
-        canvas.addEventListener("click", game, false);
+        gemBlue.render();
+        gemGreen.render();
+        gemOrange.render();
 
     }
+
+    /*
+    Displays score in top left corner using canvas
+    */
+    function renderScore() {
+        console.log(score);
+    };
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set game as the callback method, so that when
@@ -175,9 +181,12 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-        'images/Gem-Green.png'
+        'images/Gem-Blue.png',
+        'images/Gem-Green.png',
+        'images/Gem-Orange.png'
     ]);
-    Resources.onReady(menu);
+
+    Resources.onReady(init);
 
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developer's can use it more easily

@@ -1,5 +1,5 @@
-var diff = 2; // TODO - will be used to vary difficulty level, selectable at start menu
-
+var diff = 1; // TODO - will be used to vary difficulty level, selectable at start menu
+var score = 0;
 /*
 Used to randomly distribute enemies across three lines
 Defined in global scope as needed for constructor AND update method. TODO - is there a better way of doing this? 
@@ -72,9 +72,8 @@ var Player = function() {
     this.y = 400; 
 };
 
-Player.prototype.update = function(dt) {
+Player.prototype.update = function(dt) { // collision detection
     for (i = 0; i < diff * 3; i++) {
-        // console.log(allEnemies[i].x);
         if (this.x < allEnemies[i].x + 75 &&
             this.x > allEnemies[i].x - 60 &&
             this.y < allEnemies[i].y + 50 &&
@@ -106,7 +105,7 @@ Player.prototype.handleInput = function(input) {
             this.x -= 100;
         }
     }
-    else if (input === "up") { // Don't need extra if due to player.prototype.update function, water reset
+    else if (input === "up") { // Don't need extra 'if' due to player.prototype.update function, water reset
         this.y -= 85;
     }
     else if (input === "down") {
@@ -115,6 +114,45 @@ Player.prototype.handleInput = function(input) {
         }
     }
 };
+
+var Gem = function(colour) {
+    var xPos = 20 + (Math.random() * 400); // position on x axis
+    this.x = xPos;
+
+    if (colour === 'blue') {
+        this.sprite = 'images/Gem-Blue.png';
+        this.y = 268; 
+        this.points = 200;   
+    }
+
+    else if (colour === 'green'){
+        this.sprite = 'images/Gem-Green.png';
+        this.y = 185; 
+        this.points = 500;
+    }
+
+    else if (colour === 'orange'){
+        this.sprite = 'images/Gem-Orange.png';
+        this.y = 102; 
+        this.points = 1000;
+    }
+};
+
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Gem.prototype.update = function() {
+    if (this.x < player.x + 75 &&
+    this.x > player.x - 60 &&
+    this.y < player.y + 50 &&
+    this.y > player.y - 10) {
+        console.log("Woohoo, Gem");
+        score += this.points;
+        this.x = 20 + (Math.random() * 400);
+    }
+};
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -126,7 +164,9 @@ for (i = 0; i < diff * 3; i++) {
     allEnemies[i] = new Enemy();
 };
 
-
+var gemBlue = new Gem('blue');
+var gemGreen = new Gem('green');
+var gemOrange = new Gem('orange');
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
