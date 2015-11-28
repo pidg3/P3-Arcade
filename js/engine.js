@@ -63,8 +63,7 @@ var Engine = (function(global) {
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
-    function init() {
-        reset();
+    function game() {
         lastTime = Date.now();
         main();
     }
@@ -157,14 +156,17 @@ var Engine = (function(global) {
 
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
+     * those sorts of things. It's only called once by the game() method.
      */
-    function reset() {
-        // noop
+    function menu() {
+        console.log("Has gone through menu");
+        ctx.drawImage(Resources.get('images/Gem-Green.png'), 200, 200);
+        canvas.addEventListener("click", game, false);
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to
-     * draw our game level. Then set init as the callback method, so that when
+     * draw our game level. Then set game as the callback method, so that when
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
@@ -172,9 +174,10 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Gem-Green.png'
     ]);
-    Resources.onReady(init);
+    Resources.onReady(menu);
 
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developer's can use it more easily

@@ -1,16 +1,10 @@
-var diff = 3; // TODO - will be used to alter difficulty settings 
+var diff = 2; // TODO - will be used to vary difficulty level, selectable at start menu
 
-var allEnemies = [];
-
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-
-    function yRandomiser() {
+/*
+Used to randomly distribute enemies across three lines
+Defined in global scope as needed for constructor AND update method. TODO - is there a better way of doing this? 
+*/
+function yRandomiser() {
         var yPosRand = Math.random(); // generates number between 0 and 1
         var yPosFixed; // will be used to return a fixed value - one of the three layers in the game
 
@@ -25,22 +19,32 @@ var Enemy = function() {
         }
 
         return yPosFixed;
-    };
+};
 
+/* 
+Enemy class constructor
+Player must avoid these - collision detection contained within separate Player class (update method)
+*/
+var Enemy = function() {
+
+    /*
+    Randomises speed of bugs, depending on difficulty level defined
+    'sqrt' is used to dampen effects of higher difficulty to ensure still playable, and still allow 'diff'  to be defined as an integer
+    '+ 20' sets a minimum speed for bugs
+    */
     function speedRandomiser(diff) { // 
         return (Math.random() * 300 * (Math.sqrt(diff))) + 20;
     };
 
-    this.sprite = 'images/enemy-bug.png';
-    this.x = -100;
-    this.y = yRandomiser();
-    this.speed = speedRandomiser(diff);
-
-
+    this.sprite = 'images/enemy-bug.png'; // use correct image (uses resources.js for processing)
+    this.x = -100; // start off-screen: produces a nice smooth animation
+    this.y = yRandomiser(); // sets starting row
+    this.speed = speedRandomiser(diff); // sets speed
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+/*
+Updates enemy position
+*/
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -48,6 +52,7 @@ Enemy.prototype.update = function(dt) {
     this.x += (this.speed * dt);
     if (this.x > 500) {
         this.x = -100; 
+        this.y = yRandomiser();
     };
 };
 
@@ -55,6 +60,7 @@ Enemy.prototype.update = function(dt) {
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -115,9 +121,12 @@ Player.prototype.handleInput = function(input) {
 // Place the player object in a variable called player
 var player = new Player();
 
+var allEnemies = [];
 for (i = 0; i < diff * 3; i++) {
     allEnemies[i] = new Enemy();
 };
+
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
