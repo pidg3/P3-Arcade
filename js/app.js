@@ -23,7 +23,7 @@ var score = 0;
 /*
 Score required to advance levels
 */
-var maxScore = 1000;
+var maxScore = 4000;
 
 /*
 Set time for gem regeneration
@@ -32,10 +32,16 @@ Defined as global variable as used in Gem constructor and all methods
 var gemTimer = 100;
 
 /*
-Used to control gameplay vs starter countdown state
+Used to control game states. starter, play, gameover
 Starter countdown coded in engine.js
 */
-var play = false;
+var gameState = 'starter';
+
+/*
+Controls number of extra lives remaining
+Remains consistent across levels so defined globally
+*/
+var lives = 5;
 
 /* 
 Enemy (bug) class constructor
@@ -97,7 +103,7 @@ var Player = function() {
 
 /*
 Collision detection for enemies and when enter water
-Both reset score to zero and reset player position to start
+Both reset player position to start and remove a life
 Triggered by main() in engine.js
 */
 Player.prototype.update = function() {
@@ -108,16 +114,15 @@ Player.prototype.update = function() {
         this.y > allEnemies[i].y - 50) {
             this.x = 202;
             this.y = 400;
-            score = 0;
-            console.log("HIT: Score reset to zero");
+            lives--;
+            console.log(lives)
         }
     };
 
     if (this.y < 60) { // collisions with water
         this.x = 202;
         this.y = 400;
-        score = 0;
-        console.log("DUNKED: Score reset to zero");
+        lives--;
     }
 };
 

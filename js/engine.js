@@ -32,10 +32,10 @@ var Engine = (function(global) {
             dt = (now - lastTime) / 1000.0;
 
         /* 
-        Switch for whether 'play' is true/false
+        Switch for gameState
         This is only place where this var is used
         */
-        if (play === true) {
+        if (gameState === 'play') {
 
             /* 
             Call  update()/render(), pass time delta to update function 
@@ -46,23 +46,31 @@ var Engine = (function(global) {
 
             /*
             Check to see if score has been achieved
-            If yes, set 'play' to false - in effect break the game loop
+            If yes, set gameState to 'starter' - in effect break the game loop
             Also increase difficulty/reset score
             */
             if (score >= maxScore) {
                 score = 0;
                 difficulty += 1;
                 countdownTimer = 200;
-                play = false;
+                gameState = 'starter';
+            }
+
+            else if (lives === -1) {
+                gameState = 'gameover';
             }
         }
 
         /*
         Call functions used to generate starter scree
         */
-        else {
+        else if (gameState === 'starter') {
             updateStarter(dt);
             renderStarter();
+        }
+
+        else if (gameState === 'gameover') {
+            renderGameOver();
         }
 
         /* 
@@ -90,7 +98,7 @@ var Engine = (function(global) {
     }
 
     /* 
-    Called when 'play' = true
+    Called when gameState = play
     Called by the update() within main()  
     Calls all required update() methods in app.js
      */
@@ -141,7 +149,7 @@ var Engine = (function(global) {
     }
 
     /* 
-    Called when 'play' = true
+    Called when 'gameState' = play
     Render enemies, player and gems
     Uses methods defined in app.js
     */
@@ -162,18 +170,20 @@ var Engine = (function(global) {
     /*
     Called when 'play' = true
     Displays score in top left corner using canvas
+    Displays lives in top right corner using canvas
     */
     function renderScore() {
 
         ctx.fillStyle = "white";
-        ctx.textAlign= "left"; 
 
+        ctx.font = "30px calibri";
 
-        ctx.font = "30px impact";
-        ctx.fillText("Score:", 10, 85);
+        ctx.fillText("Score:", 50, 85);
+        ctx.fillText(score, 50, 118);
 
-        ctx.font = "27px impact";
-        ctx.fillText(score, 10, 118);
+        ctx.fillText("Lives:", 456, 85);
+        ctx.fillText(lives, 456, 118);
+
 
     };
 
@@ -190,7 +200,7 @@ var Engine = (function(global) {
         }
 
         else {
-            play = true;
+            gameState = 'play';
             newGame();
         }
     };
@@ -207,7 +217,6 @@ var Engine = (function(global) {
 
         ctx.font = "80px calibri";
         ctx.fillText("DEBUGGER", canvas.width / 2, 100);
-        ctx.strokeText("DEBUGGER", canvas.width / 2, 100);
 
         ctx.font = "30px calibri";
         ctx.fillText("Level " + difficulty + " starting in...", canvas.width / 2, 170);
@@ -223,8 +232,29 @@ var Engine = (function(global) {
         ctx.font = "18px calibri";
         ctx.fillText("Use the arrow keys to move", canvas.width / 2, 530);
         ctx.fillText("Get to " + maxScore + " points for the next level", canvas.width / 2, 570);
-
     };
+
+    /*
+    Render canvas for gameover state
+    Currently no 'start again button' - need to refresh
+    */
+    function renderGameOver() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+
+        ctx.font = "80px calibri";
+        ctx.fillText("GAME OVER", canvas.width / 2, 120);
+
+        ctx.font = "30px calibri";
+        ctx.fillText("You reached level " + difficulty, canvas.width / 2, 250);
+
+        ctx.drawImage(Resources.get('images/enemy-bug.png'), 85, 340);
+        ctx.drawImage(Resources.get('images/enemy-bug.png'), 205, 340);
+        ctx.drawImage(Resources.get('images/enemy-bug.png'), 325, 340);
+    };
+
     /* 
     Load all images needed for game
     Uses resources.js image loading utility
