@@ -5,14 +5,13 @@ Main game: defined gameplay, classes, methods and input
 
 /*
 Variable difficulty levels. Must be an integer at least one. 
-Can in theory be any value above one, however becomes unplayable beyond 3.
+Incremented as levels are completed by achieving maxScore
 Affects the following classes/methods:
 * Enemy constructor: speed of bugs
 * Instantiation of enemies (using allEnemies array)
-* PLayer.update method: Collision detection (used allEnemies array)
-TODO - make selectable at start menu
+* Player.update method: Collision detection (used allEnemies array)
 */
-var difficulty = 1;
+var level = 1;
 
 /*
 Track overall score
@@ -23,7 +22,7 @@ var score = 0;
 /*
 Score required to advance levels
 */
-var maxScore = 4000;
+var maxScore = 5000;
 
 /*
 Set time for gem regeneration
@@ -59,11 +58,11 @@ var Enemy = function() {
     this.y = Math.floor((Math.random() * 3)) * 83 + 60;
 
     /*
-    Randomise speed of bugs, depending on difficulty level defined
-    'cbrt' is used to dampen effects of higher difficulty to ensure still playable, and still allow 'difficulty'  to be defined as an integer
+    Randomise speed of bugs, depending on level
+    'cbrt' is used to dampen effects of higher level to ensure still playable, and still allow 'level'  to be defined as an integer
     '+ 20' sets a minimum speed for bugs
     */
-    this.speed = (Math.random() * 300 * (Math.cbrt(difficulty))) + 20;
+    this.speed = (Math.random() * 300 * (Math.cbrt(level))) + 20;
 };
 
 /*
@@ -107,7 +106,7 @@ Both reset player position to start and remove a life
 Triggered by main() in engine.js
 */
 Player.prototype.update = function() {
-    for (var i = 0; i < difficulty * 2; i++) { // collisions with enemies
+    for (var i = 0; i < level * 2; i++) { // collisions with enemies
         if (this.x < allEnemies[i].x + 75 &&
         this.x > allEnemies[i].x - 60 &&
         this.y < allEnemies[i].y + 50 &&
@@ -234,14 +233,14 @@ var gemOrange;
 
 /* 
 Instantiate objects for a level
-Number of enemies dependent on difficulty level
+Number of enemies dependent on level
 Gems are separate - necessary as they have different properties e.g. points, y-location
 Objects only instantiated once per game - in-game respawn handled by update methods
 */
 function newGame() {
     player = new Player();
 
-    for (var i = 0; i < difficulty * 2; i++) {
+    for (var i = 0; i < level * 2; i++) {
         allEnemies[i] = new Enemy();
     };
 
@@ -253,7 +252,7 @@ function newGame() {
     Listen for key presses and send output to Player.handleInput method
     If statement means only called on level 1, to avoid duplication
     */
-    if (difficulty === 1) {
+    if (level === 1) {
         /*
         Listen for key presses and send output to Player.handleInput method
         */

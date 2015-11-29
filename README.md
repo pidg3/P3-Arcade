@@ -20,14 +20,15 @@ That's about it at the moment - more features to come soon...
 
 ##Things to do to 'meet specification'
 
-* Better README: steps to run and play the game
-* Better comments
+All done! (I think...)
 
 ##Ideas to 'exceed specification'
 
-* Selectable difficulty levels with title screen (using 'diff' var)
+Some more things I'd like to do when I have time:
+
 * Sound effects
 * Selectable characters
+* Mobile version
 
 ##DONE list
 
@@ -36,8 +37,8 @@ That's about it at the moment - more features to come soon...
 * Player cannot move off screen
 * Gems
 * Score system
+* Selectable difficulty levels with title screen (using 'diff' var) - actually implemented as a level system which I quite like
 
 ##Known bugs
 
-* If gem re-spawns on player tile, player will flicker. TODO - add code to prevent re-spawn on player tile. 
-* Formatting of score doesn't work beyond 5 figs - timing to be implemented will make this unlikely to happen
+* If gem re-spawns on player tile, player will flicker. Minor and doesn't affect gameplay. TODO - add code to prevent re-spawn on player tile. 

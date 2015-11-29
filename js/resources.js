@@ -1,3 +1,4 @@
+"use strict";
 /* Resources.js
 Simple image loading utility
 Eases the process of loading image files for use in game

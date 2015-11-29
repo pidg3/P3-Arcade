@@ -1,3 +1,4 @@
+"use strict";
 /* Engine.js
 Provides the game loop functionality (update entities and render),
 draws the initial game board on the screen, and then calls  update and
@@ -47,12 +48,12 @@ var Engine = (function(global) {
             /*
             Check to see if score has been achieved
             If yes, set gameState to 'starter' - in effect break the game loop
-            Also increase difficulty/reset score
+            Also increase level/reset score
             */
             if (score >= maxScore) {
                 score = 0;
-                difficulty += 1;
-                countdownTimer = 200;
+                level += 1;
+                countdownTimer = 250;
                 gameState = 'starter';
             }
 
@@ -93,7 +94,7 @@ var Engine = (function(global) {
     */
     function init() {
         lastTime = Date.now(); // for main() to determine initial time delta
-        countdownTimer = 200;
+        countdownTimer = 250;
         main();
     }
 
@@ -194,9 +195,9 @@ var Engine = (function(global) {
     */
     function updateStarter(dt) {
         
-        if (countdownTimer > 0) {
+        if (countdownTimer > 30) {
             countdownTimer -= 1;
-            starterCountdown = Math.round(countdownTimer / 50); // TODO - make timer work better
+            starterCountdown = Math.round(countdownTimer / 50);
         }
 
         else {
@@ -219,19 +220,21 @@ var Engine = (function(global) {
         ctx.fillText("DEBUGGER", canvas.width / 2, 100);
 
         ctx.font = "30px calibri";
-        ctx.fillText("Level " + difficulty + " starting in...", canvas.width / 2, 170);
+        ctx.fillText("Level " + level + " starting in...", canvas.width / 2, 160);
 
         ctx.font = "180px impact";
-        ctx.fillText(starterCountdown, canvas.width / 2, 360);
+        ctx.fillText(starterCountdown, canvas.width / 2, 340);
 
+        ctx.drawImage(Resources.get('images/enemy-bug.png'), 85, 300); 
+        ctx.drawImage(Resources.get('images/enemy-bug.png'), 205, 300);
+        ctx.drawImage(Resources.get('images/enemy-bug.png'), 325, 300);
 
-        ctx.drawImage(Resources.get('images/enemy-bug.png'), 85, 340);
-        ctx.drawImage(Resources.get('images/enemy-bug.png'), 205, 340);
-        ctx.drawImage(Resources.get('images/enemy-bug.png'), 325, 340);
+        ctx.font = "18px calibri"; // game instructions
+        ctx.fillText("Use the arrow keys to move", canvas.width / 2, 490);
+        ctx.fillText("Pick up gems to earn points", canvas.width / 2, 520);
+        ctx.fillText("Avoid the bugs and the water", canvas.width / 2, 550);
+        ctx.fillText("Get to " + maxScore + " points for the next level. Good luck!", canvas.width / 2, 580);
 
-        ctx.font = "18px calibri";
-        ctx.fillText("Use the arrow keys to move", canvas.width / 2, 530);
-        ctx.fillText("Get to " + maxScore + " points for the next level", canvas.width / 2, 570);
     };
 
     /*
@@ -248,7 +251,7 @@ var Engine = (function(global) {
         ctx.fillText("GAME OVER", canvas.width / 2, 120);
 
         ctx.font = "30px calibri";
-        ctx.fillText("You reached level " + difficulty, canvas.width / 2, 250);
+        ctx.fillText("You reached level " + level, canvas.width / 2, 250);
 
         ctx.drawImage(Resources.get('images/enemy-bug.png'), 85, 340);
         ctx.drawImage(Resources.get('images/enemy-bug.png'), 205, 340);
