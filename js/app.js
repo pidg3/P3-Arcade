@@ -1,61 +1,91 @@
-var diff = 2; // TODO - will be used to vary difficulty level, selectable at start menu
+/*
+Variable difficulty levels. Must be an integer at least one. 
+Can in theory be any value above one, however becomes unplayable beyond 3.
+Affects the following classes/methods:
+* Enemy constructor: speed of bugs
+* Instantiation of enemies (using allEnemies array)
+* PLayer.update method: Collision detection (used allEnemies array)
+TODO - make selectable at start menu
+*/
+var difficulty = 2;
+
+/*
+Track overall score
+Displayed in top-left of canvas
+*/
 var score = 0;
 
+/*
+Set time for gem regeneration
+Defined as global variable as used in Gem constructor and all methods
+*/
+var gemTimer = 100;
+
 /* 
-Enemy class constructor
+Enemy (bug) class constructor
 Player must avoid these - collision detection contained within separate Player class (update method)
 */
 var Enemy = function() {
 
-    this.sprite = 'images/enemy-bug.png'; // use correct image (uses resources.js for processing)
+    this.sprite = 'images/enemy-bug.png';
     this.x = -100; // start off-screen: produces a nice smooth animation
 
     /*
-    Used to randomly distribute enemies across three lines
-    Defined in global scope as needed for constructor AND update method. TODO - is there a better way of doing this? 
+    Randomly distribute starting enemies across three lines (y-position)
+    Math.floor means there are three discrete options, one for each line
     */
     this.y = Math.floor((Math.random() * 3)) * 83 + 60;
 
     /*
-    Randomises speed of bugs, depending on difficulty level defined
-    'sqrt' is used to dampen effects of higher difficulty to ensure still playable, and still allow 'diff'  to be defined as an integer
+    Randomise speed of bugs, depending on difficulty level defined
+    'sqrt' is used to dampen effects of higher difficulty to ensure still playable, and still allow 'difficulty'  to be defined as an integer
     '+ 20' sets a minimum speed for bugs
     */
-    this.speed = (Math.random() * 300 * (Math.sqrt(diff))) + 20; // sets speed
+    this.speed = (Math.random() * 300 * (Math.sqrt(difficulty))) + 20;
 };
 
 /*
-Updates enemy position
+Update enemy position
+dt parameter used to ensure speed is consistent for all devices
+Triggered by main() in engine.js
 */
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x += (this.speed * dt);
-    if (this.x > 500) {
+
+    this.x += (this.speed * dt); // 'normal' L-R movement
+
+    if (this.x > 500) { // reset position when off to right of screen
         this.x = -100; 
-        this.y = Math.floor((Math.random() * 3)) * 83 + 60;    
+        this.y = Math.floor((Math.random() * 3)) * 83 + 60; // re-randomise y position - same code as above
+
+        // note speed not randmomised - remains the same - a deliberate design desision as results in better gameplay
     }
 };
 
-// Draw the enemy on the screen, required method for game
+/*
+Draw enemies on canvas
+Triggered by main() in engine.js
+*/
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
+/*
+Class constructor for controllable player
+Always start on same spot (bottom row middle)
+*/
 var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = 202;
     this.y = 400; 
 };
 
-Player.prototype.update = function() { // collision detection
-    for (i = 0; i < diff * 3; i++) {
+/*
+Collision detection for enemies and when enter water
+Both reset score to zero and reset player position to start
+Triggered by main() in engine.js
+*/
+Player.prototype.update = function() {
+    for (i = 0; i < difficulty * 3; i++) { // collisions with enemies
         if (this.x < allEnemies[i].x + 75 &&
         this.x > allEnemies[i].x - 60 &&
         this.y < allEnemies[i].y + 50 &&
@@ -67,7 +97,7 @@ Player.prototype.update = function() { // collision detection
         }
     };
 
-    if (this.y < 60) {
+    if (this.y < 60) { // collisions with water
         this.x = 202;
         this.y = 400;
         score = 0;
@@ -75,10 +105,19 @@ Player.prototype.update = function() { // collision detection
     }
 };
 
+/*
+Draw enemies on canvas
+Triggered by main() in engine.js
+*/
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+/*
+Accept input from document-wide EventListener
+Triggered by EventListener
+Secondary if statements used to prevent movement off playable area
+*/
 Player.prototype.handleInput = function(input) {
     if (input === "right") {
         if (this.x < 402) {
@@ -90,7 +129,7 @@ Player.prototype.handleInput = function(input) {
             this.x -= 102;
         }
     }
-    else if (input === "up") { // Don't need extra 'if' due to player.prototype.update function, water reset
+    else if (input === "up") { // Don't need secondary 'if' due to water reset functionality in player.prototype.update function
         this.y -= 85;
     }
     else if (input === "down") {
@@ -100,63 +139,77 @@ Player.prototype.handleInput = function(input) {
     }
 };
 
-var timerSet = 100;
-
+/*
+Gem constuctor
+Gems are collected by the player to gain points
+Single constructor used for three gem types
+Gems vary on line which they spawn on, and points they are worth. Both defined here
+*/
 var Gem = function(colour) {
-    var xPos = Math.floor((Math.random() * 5)) * 102 + 18; // position on x axis
-    this.x = xPos;
-    this.delayTimer = timerSet;
+
+    this.x = Math.floor((Math.random() * 5)) * 102 + 18; // position on x-axis, same logic to enemy distribution on y-axis
+    this.delayTimer = gemTimer; // start delayTimer value at a positive integer - this is needed for gem to spawn using .update method
 
     if (colour === 'blue') {
         this.sprite = 'images/Gem-Blue.png';
-        this.y = 268; 
+        this.y = 268; // all on bottom row
         this.points = 200;   
     }
 
     else if (colour === 'green'){
         this.sprite = 'images/Gem-Green.png';
-        this.y = 185; 
+        this.y = 185; // all on middle row
         this.points = 500;
     }
 
     else if (colour === 'orange'){
         this.sprite = 'images/Gem-Orange.png';
-        this.y = 102; 
+        this.y = 102; // all on top row
         this.points = 1000;
     }
 };
 
+/*
+Draw gems on canvas
+Cannot be generated unless delayTimer has increased to globl gemTimer variable
+Triggered by main() in engine.js
+*/
 Gem.prototype.render = function() {
-    if (this.delayTimer === 100) {
+    if (this.delayTimer === gemTimer) {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 };
-
+/*
+Collision detection for gems
+Triggered by main() in engine.js
+*/
 Gem.prototype.update = function() {
-    if (this.x < player.x + 75 &&
+    if (this.x < player.x + 75 && // collisions with gems
     this.x > player.x - 60 &&
     this.y < player.y + 50 &&
     this.y > player.y - 10 &&
-    this.delayTimer === timerSet) {
-        score += this.points;
-        this.x = Math.floor((Math.random() * 5)) * 102 + 18;
-        this.delayTimer = 0;
+    this.delayTimer === gemTimer) {
+        score += this.points; // add score depending on gem type
+        this.x = Math.floor((Math.random() * 5)) * 102 + 18; // randomly spawn on x-axis
+        this.delayTimer = 0; // set timer to zero so gem does not instantly spawn
         console.log("GEM: Score = " + score);
     }
 
-    if (this.delayTimer < timerSet) {
-        this.delayTimer += 1;
+    if (this.delayTimer < gemTimer) {
+        this.delayTimer += 1; // increases delayTimer until at a level where Gem.render method can re-spawn gem (i.e. delayTimer === gemTimer)
     }
-
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+/*
+Instantiate objects
+Number of enemies dependent on difficulty level
+Gems are separate - necessary as they have different properties e.g. points, y-location
+Objects only instantiated once - respawn handled by update methods
+*/
 var player = new Player();
 
 var allEnemies = [];
-for (i = 0; i < diff * 3; i++) {
+for (i = 0; i < difficulty * 3; i++) {
     allEnemies[i] = new Enemy();
 };
 
@@ -164,8 +217,9 @@ var gemBlue = new Gem('blue');
 var gemGreen = new Gem('green');
 var gemOrange = new Gem('orange');
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+/*
+Listed for key presses and send output to Player.handleInput method
+*/
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
