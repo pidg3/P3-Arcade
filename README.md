@@ -13,6 +13,8 @@ Go to this link for GitHub hosted page:
 
 Arrow keys control the character
 Earn points by collecting gems
+Don't get hit by a bug or fall in the water, or you'll lose all your points
+Get to 2,000 points to advance to the next level
 
 That's about it at the moment - more features to come soon...
 

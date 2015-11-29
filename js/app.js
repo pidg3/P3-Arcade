@@ -20,15 +20,19 @@ Displayed in top-left of canvas
 var score = 0;
 
 /*
+Score required to advance levels
+*/
+var maxScore = 2000;
+
+/*
 Set time for gem regeneration
 Defined as global variable as used in Gem constructor and all methods
 */
 var gemTimer = 100;
 
 /*
-Used to control gameplay vs level countdown state
-Starts at false
-TODO - make start at false with countdown function
+Used to control gameplay vs starter countdown state
+Starter countdown coded in engine.js
 */
 var play = false;
 
@@ -212,21 +216,33 @@ Gem.prototype.update = function() {
 };
 
 /*
-Instantiate objects
+Create variables in global namespace
+Do NOT instantiate classes at this stage - this is done by newGame()
+This is so new objects can be created for each level
+*/
+var player;
+var allEnemies=[];
+var gemBlue;
+var gemGreen;
+var gemOrange;
+
+/* 
+Instantiate objects for a level
 Number of enemies dependent on difficulty level
 Gems are separate - necessary as they have different properties e.g. points, y-location
-Objects only instantiated once - respawn handled by update methods
+Objects only instantiated once per game - in-game respawn handled by update methods
 */
-var player = new Player();
+function newGame() {
+    player = new Player();
 
-var allEnemies = [];
-for (i = 0; i < difficulty * 3; i++) {
-    allEnemies[i] = new Enemy();
+    for (i = 0; i < difficulty * 3; i++) {
+        allEnemies[i] = new Enemy();
+    };
+
+    gemBlue = new Gem('blue');
+    gemGreen = new Gem('green');
+    gemOrange = new Gem('orange');
 };
-
-var gemBlue = new Gem('blue');
-var gemGreen = new Gem('green');
-var gemOrange = new Gem('orange');
 
 /*
 Listed for key presses and send output to Player.handleInput method

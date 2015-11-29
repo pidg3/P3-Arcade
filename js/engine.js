@@ -28,20 +28,38 @@ var Engine = (function(global) {
         Get time delta information, used to smooth animations and ensure
         consistent performance across devices
         */
-
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
         /* 
-        Call  update()/render(), pass time delta to update function 
-        as used for smooth animation
+        Switch for whether 'play' is true/false
+        This is only place where this var is used
         */
-
         if (play === true) {
+
+            /* 
+            Call  update()/render(), pass time delta to update function 
+            as used for smooth animation
+            */
             updateEntities(dt); // needs to be invoked before render functions for smooth animations
             renderGame();
+
+            /*
+            Check to see if score has been achieved
+            If yes, set 'play' to false - in effect break the game loop
+            Also increase difficulty/reset score
+            */
+            if (score >= maxScore) {
+                score = 0;
+                difficulty += 1;
+                countdownTimer = 200;
+                play = false;
+            }
         }
 
+        /*
+        Call functions used to generate starter scree
+        */
         else {
             updateStarter(dt);
             renderStarter();
@@ -49,7 +67,7 @@ var Engine = (function(global) {
 
         /* 
         Set  lastTime variable used to determine the time delta for the next
-        function  call
+        function call
         */
         lastTime = now;
 
@@ -72,6 +90,7 @@ var Engine = (function(global) {
     }
 
     /* 
+    Called when 'play' = true
     Called by the update() within main()  
     Calls all required update() methods in app.js
      */
@@ -87,6 +106,7 @@ var Engine = (function(global) {
     }
 
     /* 
+    Called when 'play' = true
     Render the game
     Called every loop of the game engine (same as update()) 
     */
@@ -119,6 +139,7 @@ var Engine = (function(global) {
     }
 
     /* 
+    Called when 'play' = true
     Render enemies, player and gems
     Uses methods defined in app.js
     */
@@ -137,6 +158,7 @@ var Engine = (function(global) {
     }
 
     /*
+    Called when 'play' = true
     Displays score in top left corner using canvas
     */
     function renderScore() {
@@ -151,21 +173,29 @@ var Engine = (function(global) {
 
     };
 
+    /*
+    Called when 'play' = false
+    Counts down to zero to drive starter screen
+    When zero, sets 'play' = true and re-instantiates objects
+    */
     function updateStarter(dt) {
         
         if (countdownTimer > 0) {
-            console.log("Main loop");
-            console.log(countdownTimer);
             countdownTimer -= 1;
-            starterCountdown = Math.round(countdownTimer / 50);
+            starterCountdown = Math.round(countdownTimer / 50); // TODO - make timer work better
         }
 
         else {
-            console.log("Starter else");
             play = true;
+            newGame();
         }
     };
 
+    /*
+    Called when 'play' = false
+    Draws starter screen
+    TODO - make design better
+    */
     function renderStarter() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
