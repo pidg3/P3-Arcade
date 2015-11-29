@@ -1,3 +1,7 @@
+/* App.js
+Main game: defined gameplay, classes, methods and input
+*/
+
 /*
 Variable difficulty levels. Must be an integer at least one. 
 Can in theory be any value above one, however becomes unplayable beyond 3.
@@ -7,7 +11,7 @@ Affects the following classes/methods:
 * PLayer.update method: Collision detection (used allEnemies array)
 TODO - make selectable at start menu
 */
-var difficulty = 2;
+var difficulty = 3;
 
 /*
 Track overall score

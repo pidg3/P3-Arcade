@@ -28,3 +28,4 @@ I've re-written the comments - I thought this would be helpful in making sure I 
 ##Known bugs
 
 * If gem re-spawns on player tile, player will flicker. TODO - add code to prevent re-spawn on player tile. 
+* Formatting of score doesn't work beyond 5 figs - timing to be implemented will make this unlikely to happen
