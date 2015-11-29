@@ -11,7 +11,7 @@ Affects the following classes/methods:
 * PLayer.update method: Collision detection (used allEnemies array)
 TODO - make selectable at start menu
 */
-var difficulty = 3;
+var difficulty = 2;
 
 /*
 Track overall score
