@@ -72,7 +72,7 @@ var Player = function() {
     this.y = 400; 
 };
 
-Player.prototype.update = function(dt) { // collision detection
+Player.prototype.update = function() { // collision detection
     for (i = 0; i < diff * 3; i++) {
         if (this.x < allEnemies[i].x + 75 &&
             this.x > allEnemies[i].x - 60 &&
@@ -115,9 +115,12 @@ Player.prototype.handleInput = function(input) {
     }
 };
 
+var timerSet = 100;
+
 var Gem = function(colour) {
     var xPos = Math.floor((Math.random() * 5)) * 102 + 18; // position on x axis
     this.x = xPos;
+    this.delayTimer = timerSet;
 
     if (colour === 'blue') {
         this.sprite = 'images/Gem-Blue.png';
@@ -139,20 +142,28 @@ var Gem = function(colour) {
 };
 
 Gem.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if (this.delayTimer === 100) {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
 };
 
 Gem.prototype.update = function() {
     if (this.x < player.x + 75 &&
     this.x > player.x - 60 &&
     this.y < player.y + 50 &&
-    this.y > player.y - 10) {
+    this.y > player.y - 10 &&
+    this.delayTimer === timerSet) {
         console.log("Woohoo, Gem");
         score += this.points;
         this.x = Math.floor((Math.random() * 5)) * 102 + 18;
+        this.delayTimer = 0;
     }
-};
 
+    if (this.delayTimer < timerSet) {
+        this.delayTimer += 1;
+    }
+
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
