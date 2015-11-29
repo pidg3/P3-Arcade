@@ -112,6 +112,8 @@ var Engine = (function(global) {
     */
     function renderGame() {
 
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas to title
+
         var rowImages = [ // generate game background
                 'images/water-block.png',   // Top row is water
                 'images/stone-block.png',   // Row 1 of 3 of stone
@@ -164,6 +166,8 @@ var Engine = (function(global) {
     function renderScore() {
 
         ctx.fillStyle = "white";
+        ctx.textAlign= "left"; 
+
 
         ctx.font = "30px impact";
         ctx.fillText("Score:", 10, 85);
@@ -194,20 +198,33 @@ var Engine = (function(global) {
     /*
     Called when 'play' = false
     Draws starter screen
-    TODO - make design better
     */
     function renderStarter() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "black";
+        ctx.textAlign= "center"; 
 
-        ctx.font = "30px impact";
-        ctx.fillText("Level " + difficulty + " starting in...", 10, 85);
+        ctx.font = "80px calibri";
+        ctx.fillText("DEBUGGER", canvas.width / 2, 100);
+        ctx.strokeText("DEBUGGER", canvas.width / 2, 100);
 
-        ctx.font = "120px impact";
-        ctx.fillText(starterCountdown, 100, 300);
+        ctx.font = "30px calibri";
+        ctx.fillText("Level " + difficulty + " starting in...", canvas.width / 2, 170);
+
+        ctx.font = "180px impact";
+        ctx.fillText(starterCountdown, canvas.width / 2, 360);
+
+
+        ctx.drawImage(Resources.get('images/enemy-bug.png'), 85, 340);
+        ctx.drawImage(Resources.get('images/enemy-bug.png'), 205, 340);
+        ctx.drawImage(Resources.get('images/enemy-bug.png'), 325, 340);
+
+        ctx.font = "18px calibri";
+        ctx.fillText("Use the arrow keys to move", canvas.width / 2, 530);
+        ctx.fillText("Get to " + maxScore + " points for the next level", canvas.width / 2, 570);
+
     };
-
     /* 
     Load all images needed for game
     Uses resources.js image loading utility

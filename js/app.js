@@ -244,6 +244,10 @@ function newGame() {
     gemGreen = new Gem('green');
     gemOrange = new Gem('orange');
 
+    /*
+    Listen for key presses and send output to Player.handleInput method
+    If statement means only called on level 1, to avoid duplication
+    */
     if (difficulty === 1) {
         /*
         Listen for key presses and send output to Player.handleInput method
