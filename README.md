@@ -6,6 +6,16 @@ Repository was cloned from the main Udacity one: https://github.com/udacity/fron
 
 I've re-written the comments - I thought this would be helpful in making sure I understood what the Udacity code was doing, and the rubric seems to place a premium on well-written documentation. 
 
+##How to play
+
+Go to this link for GitHub hosted page: 
+[pidg3.github.io/P3-Arcade](pidg3.github.io/P3-Arcade)
+
+Arrow keys control the character
+Earn points by collecting gems
+
+That's about it at the moment - more features to come soon...
+
 ##Things to do to 'meet specification'
 
 * Better README: steps to run and play the game
