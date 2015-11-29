@@ -11,7 +11,9 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime; // used to control timing
+        lastTime, // used to control timing
+        starterCountdown = 5,
+        countdownTimer; // used for starter screen
 
     canvas.width = 505;
     canvas.height = 606;
@@ -26,6 +28,7 @@ var Engine = (function(global) {
         Get time delta information, used to smooth animations and ensure
         consistent performance across devices
         */
+
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
@@ -33,14 +36,24 @@ var Engine = (function(global) {
         Call  update()/render(), pass time delta to update function 
         as used for smooth animation
         */
-        updateEntities(dt);
-        render();
+
+        if (play === true) {
+            updateEntities(dt); // needs to be invoked before render functions for smooth animations
+            renderGame();
+        }
+
+        else {
+            updateStarter(dt);
+            renderStarter();
+        }
 
         /* 
         Set  lastTime variable used to determine the time delta for the next
         function  call
         */
         lastTime = now;
+
+
 
         /*
         Use the browser's requestAnimationFrame function to call this
@@ -54,6 +67,7 @@ var Engine = (function(global) {
     */
     function init() {
         lastTime = Date.now(); // for main() to determine initial time delta
+        countdownTimer = 200;
         main();
     }
 
@@ -76,7 +90,7 @@ var Engine = (function(global) {
     Render the game
     Called every loop of the game engine (same as update()) 
     */
-    function render() {
+    function renderGame() {
 
         var rowImages = [ // generate game background
                 'images/water-block.png',   // Top row is water
@@ -99,7 +113,6 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
 
         renderEntities();
         renderScore();
@@ -136,6 +149,33 @@ var Engine = (function(global) {
         ctx.font = "27px impact";
         ctx.fillText(score, 10, 118);
 
+    };
+
+    function updateStarter(dt) {
+        
+        if (countdownTimer > 0) {
+            console.log("Main loop");
+            console.log(countdownTimer);
+            countdownTimer -= 1;
+            starterCountdown = Math.round(countdownTimer / 50);
+        }
+
+        else {
+            console.log("Starter else");
+            play = true;
+        }
+    };
+
+    function renderStarter() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "black";
+
+        ctx.font = "30px impact";
+        ctx.fillText("Level " + difficulty + " starting in...", 10, 85);
+
+        ctx.font = "120px impact";
+        ctx.fillText(starterCountdown, 100, 300);
     };
 
     /* 

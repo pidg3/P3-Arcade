@@ -11,7 +11,7 @@ Affects the following classes/methods:
 * PLayer.update method: Collision detection (used allEnemies array)
 TODO - make selectable at start menu
 */
-var difficulty = 2;
+var difficulty = 1;
 
 /*
 Track overall score
@@ -24,6 +24,13 @@ Set time for gem regeneration
 Defined as global variable as used in Gem constructor and all methods
 */
 var gemTimer = 100;
+
+/*
+Used to control gameplay vs level countdown state
+Starts at false
+TODO - make start at false with countdown function
+*/
+var play = false;
 
 /* 
 Enemy (bug) class constructor
