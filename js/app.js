@@ -1,3 +1,4 @@
+"use strict";
 /* App.js
 Main game: defined gameplay, classes, methods and input
 */
@@ -100,7 +101,7 @@ Both reset score to zero and reset player position to start
 Triggered by main() in engine.js
 */
 Player.prototype.update = function() {
-    for (i = 0; i < difficulty * 3; i++) { // collisions with enemies
+    for (var i = 0; i < difficulty * 3; i++) { // collisions with enemies
         if (this.x < allEnemies[i].x + 75 &&
         this.x > allEnemies[i].x - 60 &&
         this.y < allEnemies[i].y + 50 &&
@@ -235,25 +236,29 @@ Objects only instantiated once per game - in-game respawn handled by update meth
 function newGame() {
     player = new Player();
 
-    for (i = 0; i < difficulty * 3; i++) {
+    for (var i = 0; i < difficulty * 3; i++) {
         allEnemies[i] = new Enemy();
     };
 
     gemBlue = new Gem('blue');
     gemGreen = new Gem('green');
     gemOrange = new Gem('orange');
+
+    if (difficulty === 1) {
+        /*
+        Listen for key presses and send output to Player.handleInput method
+        */
+        document.addEventListener('keyup', function(e) {
+            var allowedKeys = {
+                37: 'left',
+                38: 'up',
+                39: 'right',
+                40: 'down'
+            };
+
+            player.handleInput(allowedKeys[e.keyCode]);
+        });
+    }
+
 };
 
-/*
-Listed for key presses and send output to Player.handleInput method
-*/
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
-
-    player.handleInput(allowedKeys[e.keyCode]);
-});
