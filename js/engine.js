@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /* Engine.js
 Provides the game loop functionality (update entities and render),
 draws the initial game board on the screen, and then calls  update and
@@ -137,7 +137,7 @@ var Engine = (function(global) {
 
         /* 
         Loop through of rows and columns defined above
-        Use rowImages array to draw the correct image for that portion of the "grid"
+        Use rowImages array to draw the correct image for that portion of the 'grid'
         */
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
@@ -175,18 +175,16 @@ var Engine = (function(global) {
     */
     function renderScore() {
 
-        ctx.fillStyle = "white";
+        ctx.fillStyle = 'white';
 
-        ctx.font = "30px calibri";
+        ctx.font = '30px calibri';
 
-        ctx.fillText("Score:", 50, 85);
+        ctx.fillText('Score:', 50, 85);
         ctx.fillText(score, 50, 118);
 
-        ctx.fillText("Lives:", 456, 85);
+        ctx.fillText('Lives:', 456, 85);
         ctx.fillText(lives, 456, 118);
-
-
-    };
+    }
 
     /*
     Called when 'play' = false
@@ -204,7 +202,7 @@ var Engine = (function(global) {
             gameState = 'play';
             newGame();
         }
-    };
+    }
 
     /*
     Called when 'play' = false
@@ -213,29 +211,29 @@ var Engine = (function(global) {
     function renderStarter() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "black";
-        ctx.textAlign= "center"; 
+        ctx.fillStyle = 'black';
+        ctx.textAlign= 'center'; 
 
-        ctx.font = "80px calibri";
-        ctx.fillText("DEBUGGER", canvas.width / 2, 100);
+        ctx.font = '80px calibri';
+        ctx.fillText('DEBUGGER', canvas.width / 2, 100);
 
-        ctx.font = "30px calibri";
-        ctx.fillText("Level " + level + " starting in...", canvas.width / 2, 160);
+        ctx.font = '30px calibri';
+        ctx.fillText('Level ' + level + ' starting in...', canvas.width / 2, 160);
 
-        ctx.font = "180px impact";
+        ctx.font = '180px impact';
         ctx.fillText(starterCountdown, canvas.width / 2, 340);
 
         ctx.drawImage(Resources.get('images/enemy-bug.png'), 85, 300); 
         ctx.drawImage(Resources.get('images/enemy-bug.png'), 205, 300);
         ctx.drawImage(Resources.get('images/enemy-bug.png'), 325, 300);
 
-        ctx.font = "18px calibri"; // game instructions
-        ctx.fillText("Use the arrow keys to move", canvas.width / 2, 490);
-        ctx.fillText("Pick up gems to earn points", canvas.width / 2, 520);
-        ctx.fillText("Avoid the bugs and the water", canvas.width / 2, 550);
-        ctx.fillText("Get to " + maxScore + " points for the next level. Good luck!", canvas.width / 2, 580);
+        ctx.font = '18px calibri'; // game instructions
+        ctx.fillText('Use the arrow keys to move', canvas.width / 2, 490);
+        ctx.fillText('Pick up gems to earn points', canvas.width / 2, 520);
+        ctx.fillText('Avoid the bugs and the water', canvas.width / 2, 550);
+        ctx.fillText('Get to ' + maxScore + ' points for the next level. Good luck!', canvas.width / 2, 580);
 
-    };
+    }
 
     /*
     Render canvas for gameover state
@@ -244,19 +242,19 @@ var Engine = (function(global) {
     function renderGameOver() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "black";
-        ctx.textAlign = "center";
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
 
-        ctx.font = "80px calibri";
-        ctx.fillText("GAME OVER", canvas.width / 2, 120);
+        ctx.font = '80px calibri';
+        ctx.fillText('GAME OVER', canvas.width / 2, 120);
 
-        ctx.font = "30px calibri";
-        ctx.fillText("You reached level " + level, canvas.width / 2, 250);
+        ctx.font = '30px calibri';
+        ctx.fillText('You reached level ' + level, canvas.width / 2, 250);
 
         ctx.drawImage(Resources.get('images/enemy-bug.png'), 85, 340);
         ctx.drawImage(Resources.get('images/enemy-bug.png'), 205, 340);
         ctx.drawImage(Resources.get('images/enemy-bug.png'), 325, 340);
-    };
+    }
 
     /* 
     Load all images needed for game

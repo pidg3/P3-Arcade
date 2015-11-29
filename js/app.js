@@ -1,4 +1,4 @@
-"use strict";
+'use strict'; 
 /* App.js
 Main game: defined gameplay, classes, methods and input
 */
@@ -114,9 +114,8 @@ Player.prototype.update = function() {
             this.x = 202;
             this.y = 400;
             lives--;
-            console.log(lives)
         }
-    };
+    }
 
     if (this.y < 60) { // collisions with water
         this.x = 202;
@@ -139,23 +138,17 @@ Triggered by EventListener
 Secondary if statements used to prevent movement off playable area
 */
 Player.prototype.handleInput = function(input) {
-    if (input === "right") {
-        if (this.x < 402) {
-            this.x += 102;
-        }
+    if (input === 'right' && this.x < 402) {
+        this.x += 102;
     }
-    else if (input === "left") {
-        if (this.x > 2) {
-            this.x -= 102;
-        }
+    else if (input === 'left' && this.x > 2) {
+        this.x -= 102;
     }
-    else if (input === "up") { // Don't need secondary 'if' due to water reset functionality in player.prototype.update function
+    else if (input === 'up') { // Don't need && due to water reset functionality in player.prototype.update function
         this.y -= 85;
     }
-    else if (input === "down") {
-        if (this.y < 400) {
-            this.y += 85;
-        }
+    else if (input === 'down' && this.y < 400) {
+        this.y += 85;
     }
 };
 
@@ -212,7 +205,6 @@ Gem.prototype.update = function() {
         score += this.points; // add score depending on gem type
         this.x = Math.floor((Math.random() * 5)) * 102 + 18; // randomly spawn on x-axis
         this.delayTimer = 0; // set timer to zero so gem does not instantly spawn
-        console.log("GEM: Score = " + score);
     }
 
     if (this.delayTimer < gemTimer) {
@@ -242,7 +234,7 @@ function newGame() {
 
     for (var i = 0; i < level * 2; i++) {
         allEnemies[i] = new Enemy();
-    };
+    }
 
     gemBlue = new Gem('blue');
     gemGreen = new Gem('green');
@@ -268,5 +260,5 @@ function newGame() {
         });
     }
 
-};
+}
 
