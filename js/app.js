@@ -1,25 +1,5 @@
-var diff = 1; // TODO - will be used to vary difficulty level, selectable at start menu
-var score = 99000;
-/*
-Used to randomly distribute enemies across three lines
-Defined in global scope as needed for constructor AND update method. TODO - is there a better way of doing this? 
-*/
-function yRandomiser() {
-        var yPosRand = Math.random(); // generates number between 0 and 1
-        var yPosFixed; // will be used to return a fixed value - one of the three layers in the game
-
-        if (yPosRand < 0.33) {
-            yPosFixed = 55; // top layer
-        }
-        else if (yPosRand > 0.66) {
-            yPosFixed = 225; // bottom layer
-        }
-        else {
-            yPosFixed = 140; // middle layer
-        }
-
-        return yPosFixed;
-};
+var diff = 2; // TODO - will be used to vary difficulty level, selectable at start menu
+var score = 0;
 
 /* 
 Enemy class constructor
@@ -27,19 +7,21 @@ Player must avoid these - collision detection contained within separate Player c
 */
 var Enemy = function() {
 
+    this.sprite = 'images/enemy-bug.png'; // use correct image (uses resources.js for processing)
+    this.x = -100; // start off-screen: produces a nice smooth animation
+
+    /*
+    Used to randomly distribute enemies across three lines
+    Defined in global scope as needed for constructor AND update method. TODO - is there a better way of doing this? 
+    */
+    this.y = Math.floor((Math.random() * 3)) * 83 + 60;
+
     /*
     Randomises speed of bugs, depending on difficulty level defined
     'sqrt' is used to dampen effects of higher difficulty to ensure still playable, and still allow 'diff'  to be defined as an integer
     '+ 20' sets a minimum speed for bugs
     */
-    function speedRandomiser(diff) { // 
-        return (Math.random() * 300 * (Math.sqrt(diff))) + 20;
-    };
-
-    this.sprite = 'images/enemy-bug.png'; // use correct image (uses resources.js for processing)
-    this.x = -100; // start off-screen: produces a nice smooth animation
-    this.y = yRandomiser(); // sets starting row
-    this.speed = speedRandomiser(diff); // sets speed
+    this.speed = (Math.random() * 300 * (Math.sqrt(diff))) + 20; // sets speed
 };
 
 /*
@@ -52,8 +34,8 @@ Enemy.prototype.update = function(dt) {
     this.x += (this.speed * dt);
     if (this.x > 500) {
         this.x = -100; 
-        this.y = yRandomiser();
-    };
+        this.y = Math.floor((Math.random() * 3)) * 83 + 60;    
+    }
 };
 
 // Draw the enemy on the screen, required method for game
