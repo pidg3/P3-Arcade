@@ -23,7 +23,7 @@ var score = 0;
 /*
 Score required to advance levels
 */
-var maxScore = 2000;
+var maxScore = 1000;
 
 /*
 Set time for gem regeneration
@@ -54,10 +54,10 @@ var Enemy = function() {
 
     /*
     Randomise speed of bugs, depending on difficulty level defined
-    'sqrt' is used to dampen effects of higher difficulty to ensure still playable, and still allow 'difficulty'  to be defined as an integer
+    'cbrt' is used to dampen effects of higher difficulty to ensure still playable, and still allow 'difficulty'  to be defined as an integer
     '+ 20' sets a minimum speed for bugs
     */
-    this.speed = (Math.random() * 300 * (Math.sqrt(difficulty))) + 20;
+    this.speed = (Math.random() * 300 * (Math.cbrt(difficulty))) + 20;
 };
 
 /*
@@ -101,7 +101,7 @@ Both reset score to zero and reset player position to start
 Triggered by main() in engine.js
 */
 Player.prototype.update = function() {
-    for (var i = 0; i < difficulty * 3; i++) { // collisions with enemies
+    for (var i = 0; i < difficulty * 2; i++) { // collisions with enemies
         if (this.x < allEnemies[i].x + 75 &&
         this.x > allEnemies[i].x - 60 &&
         this.y < allEnemies[i].y + 50 &&
@@ -236,7 +236,7 @@ Objects only instantiated once per game - in-game respawn handled by update meth
 function newGame() {
     player = new Player();
 
-    for (var i = 0; i < difficulty * 3; i++) {
+    for (var i = 0; i < difficulty * 2; i++) {
         allEnemies[i] = new Enemy();
     };
 
