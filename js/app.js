@@ -1,5 +1,5 @@
 var diff = 1; // TODO - will be used to vary difficulty level, selectable at start menu
-var score = 0;
+var score = 99000;
 /*
 Used to randomly distribute enemies across three lines
 Defined in global scope as needed for constructor AND update method. TODO - is there a better way of doing this? 
@@ -75,18 +75,21 @@ var Player = function() {
 Player.prototype.update = function() { // collision detection
     for (i = 0; i < diff * 3; i++) {
         if (this.x < allEnemies[i].x + 75 &&
-            this.x > allEnemies[i].x - 60 &&
-            this.y < allEnemies[i].y + 50 &&
-            this.y > allEnemies[i].y - 50)
-        {
+        this.x > allEnemies[i].x - 60 &&
+        this.y < allEnemies[i].y + 50 &&
+        this.y > allEnemies[i].y - 50) {
             this.x = 202;
             this.y = 400;
+            score = 0;
+            console.log("HIT: Score reset to zero");
         }
     };
 
     if (this.y < 60) {
         this.x = 202;
         this.y = 400;
+        score = 0;
+        console.log("DUNKED: Score reset to zero");
     }
 };
 
@@ -153,10 +156,10 @@ Gem.prototype.update = function() {
     this.y < player.y + 50 &&
     this.y > player.y - 10 &&
     this.delayTimer === timerSet) {
-        console.log("Woohoo, Gem");
         score += this.points;
         this.x = Math.floor((Math.random() * 5)) * 102 + 18;
         this.delayTimer = 0;
+        console.log("GEM: Score = " + score);
     }
 
     if (this.delayTimer < timerSet) {

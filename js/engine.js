@@ -168,7 +168,15 @@ var Engine = (function(global) {
     Displays score in top left corner using canvas
     */
     function renderScore() {
-        console.log(score);
+     //   ctx.font();
+        ctx.fillStyle = "white";
+
+        ctx.font = "30px impact";
+        ctx.fillText("Score:", 10, 85);
+
+        ctx.font = "27px impact";
+        ctx.fillText(score, 10, 118);
+
     };
 
     /* Go ahead and load all of the images we know we're going to need to
