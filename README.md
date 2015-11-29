@@ -9,7 +9,7 @@ I've re-written the comments - I thought this would be helpful in making sure I 
 ##How to play
 
 Go to this link for GitHub hosted page: 
-[pidg3.github.io/P3-Arcade](pidg3.github.io/P3-Arcade)
+[pidg3.github.io/P3-Arcade](http://pidg3.github.io/P3-Arcade)
 
 Arrow keys control the character
 Earn points by collecting gems
